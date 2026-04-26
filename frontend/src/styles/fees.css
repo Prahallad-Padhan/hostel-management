@@ -1,0 +1,101 @@
+.fees-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.fees-container h2 {
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+
+.fee-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat span {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.fees-container > button {
+  margin-bottom: 1rem;
+  background-color: #28a745;
+}
+
+.fees-container > button:hover {
+  background-color: #218838;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-buttons button {
+  background-color: #6c757d;
+  padding: 8px 16px;
+}
+
+.filter-buttons button:hover {
+  background-color: #5a6268;
+}
+
+.filter-buttons button.active {
+  background-color: #007bff;
+}
+
+.fee-form {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  border-left: 4px solid #007bff;
+}
+
+.fee-form input,
+.fee-form select {
+  margin-bottom: 1rem;
+}
+
+.fee-form button {
+  background-color: #007bff;
+  margin-top: 0.5rem;
+}
+
+.fee-form button:hover {
+  background-color: #0056b3;
+}
+
+.fees-container table td.pending {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.fees-container table td.paid {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.fees-container table button {
+  background-color: #28a745;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.fees-container table button:hover {
+  background-color: #218838;
+}

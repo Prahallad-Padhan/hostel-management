@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: hostel-backend
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./backend/db:/app/db
+    env_file:
+      - ./backend/.env
+
+  frontend:
+    build: ./frontend
+    container_name: hostel-frontend
+    ports:
+      - "3001:80"
+    depends_on:
+      - backend

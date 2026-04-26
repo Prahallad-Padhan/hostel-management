@@ -1,0 +1,53 @@
+.bookings-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.bookings-container h2 {
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+
+.bookings-container > button {
+  margin-bottom: 1.5rem;
+  background-color: #28a745;
+}
+
+.bookings-container > button:hover {
+  background-color: #218838;
+}
+
+.booking-form {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  border-left: 4px solid #007bff;
+}
+
+.booking-form select,
+.booking-form input {
+  margin-bottom: 1rem;
+}
+
+.booking-form button {
+  background-color: #007bff;
+  margin-top: 0.5rem;
+}
+
+.booking-form button:hover {
+  background-color: #0056b3;
+}
+
+.bookings-container table button {
+  background-color: #ffc107;
+  color: #333;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.bookings-container table button:hover {
+  background-color: #e0a800;
+}
