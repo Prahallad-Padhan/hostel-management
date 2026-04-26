@@ -1,0 +1,36 @@
+- hosts: web
+  become: yes
+
+  tasks:
+    - name: Install Git
+      yum:
+        name: git
+        state: present
+
+    - name: Install Docker
+      yum:
+        name: docker
+        state: present
+
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add ec2-user to docker group
+      user:
+        name: ec2-user
+        groups: docker
+        append: yes
+
+    - name: Clone project
+      git:
+        repo: https://github.com/Prahallad-Padhan/hostel-management.git
+        dest: /home/ec2-user/hostel-management
+        force: yes
+
+    - name: Run containers
+      shell: |
+        cd /home/ec2-user/hostel-management
+        docker compose up -d
