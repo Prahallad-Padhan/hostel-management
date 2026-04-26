@@ -17,7 +17,17 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            rm -f ~/.docker/cli-plugins/docker-buildx
+
+            sudo chown -R ec2-user:ec2-user ~/hostel-management
+
             cd ~/hostel-management
+            git reset --hard
+            git clean -fd
             git pull origin main
+
+            docker build -t hostel-management-backend ./backend
+            docker build -t hostel-management-frontend ./frontend
+
             docker compose down
-            docker compose up -d --build
+            docker compose up -d
