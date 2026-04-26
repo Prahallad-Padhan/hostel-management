@@ -22,3 +22,8 @@ terraform.tfstate.backup
 
 # Logs
 npm-debug.log
+
+# Large binaries
+minikube-linux-amd64
+minikube-darwin-amd64
+minikube.exe
