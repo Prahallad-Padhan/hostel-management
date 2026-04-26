@@ -23,6 +23,7 @@ A full-stack hostel management application with comprehensive infrastructure aut
 ```
 
 **Key Services:**
+
 - **Backend**: Express.js server with REST API
 - **Frontend**: React app built with Vite, served by Nginx
 - **Database**: SQLite (file-based)
@@ -37,14 +38,15 @@ A full-stack hostel management application with comprehensive infrastructure aut
 
 **Multi-container deployment with 4 services:**
 
-| Service | Image | Port | Purpose |
-|---------|-------|------|---------|
-| **backend** | Custom (Node.js) | 5001 | API server |
-| **frontend** | Custom (Nginx) | 3001 | Web UI |
-| **prometheus** | prom/prometheus | 9090 | Metrics collection |
-| **grafana** | grafana/grafana | 3002 | Visualization dashboard |
+| Service        | Image            | Port | Purpose                 |
+| -------------- | ---------------- | ---- | ----------------------- |
+| **backend**    | Custom (Node.js) | 5001 | API server              |
+| **frontend**   | Custom (Nginx)   | 3001 | Web UI                  |
+| **prometheus** | prom/prometheus  | 9090 | Metrics collection      |
+| **grafana**    | grafana/grafana  | 3002 | Visualization dashboard |
 
 ### Backend Dockerfile
+
 - **Base**: Node.js 18
 - **Approach**: Single-stage build
 - **Dependencies**: npm install with sqlite3 compilation
@@ -52,10 +54,12 @@ A full-stack hostel management application with comprehensive infrastructure aut
 - **Entrypoint**: `npm start`
 
 **⚠️ Issue**: Building sqlite3 from source every deployment is slow. Consider:
+
 - Using pre-built sqlite3 binary
 - Caching npm dependencies in multi-stage build
 
 ### Frontend Dockerfile
+
 - **Build Stage**: Node.js 18 + Vite build
 - **Runtime Stage**: Nginx Alpine
 - **Approach**: Multi-stage build (optimized ✅)
@@ -89,11 +93,13 @@ aws_instance (hostel_server)
 ```
 
 **Current Configuration:**
+
 - **Instance Type**: t3.micro (1 vCPU, 1 GB RAM)
 - **Region**: us-east-1 (customizable)
 - **State**: Stored in `terraform.tfstate` (⚠️ unencrypted, tracked in git)
 
 **Variables** (`terraform/variables.tf`):
+
 ```hcl
 aws_region = "us-east-1"
 ami_id     = "ami-098e39bafa7e7303d" (Amazon Linux 2)
@@ -125,12 +131,14 @@ key_name   = "hostel-key"
 6. ✅ **Run docker compose** - Start all services
 
 **Inventory** (`ansible/inventory.ini`):
+
 ```ini
 [web]
 <ec2_instance_ip>
 ```
 
 **Limitations:**
+
 - Only provisions once (no idempotency for updates)
 - No error handling
 - Direct deployment without validation
@@ -173,13 +181,13 @@ Docker Compose Up
 
 **Issues & Recommendations** ⚠️
 
-| Issue | Impact | Fix |
-|-------|--------|-----|
-| No build validation | Broken code deployed | Add `npm run build` check |
-| Hardcoded IP (13.217.10.217) | Manual update needed | Use Terraform outputs |
-| No rollback | Failed deploy stuck | Add version tagging |
-| No health checks | Unknown service status | Add curl health endpoint |
-| Secrets in plaintext | EC2_SSH_KEY exposure | Already using secrets ✅ |
+| Issue                        | Impact                 | Fix                       |
+| ---------------------------- | ---------------------- | ------------------------- |
+| No build validation          | Broken code deployed   | Add `npm run build` check |
+| Hardcoded IP (13.217.10.217) | Manual update needed   | Use Terraform outputs     |
+| No rollback                  | Failed deploy stuck    | Add version tagging       |
+| No health checks             | Unknown service status | Add curl health endpoint  |
+| Secrets in plaintext         | EC2_SSH_KEY exposure   | Already using secrets ✅  |
 
 ---
 
@@ -189,7 +197,7 @@ Docker Compose Up
 
 ```yaml
 global:
-  scrape_interval: 15s  # Metrics every 15 seconds
+  scrape_interval: 15s # Metrics every 15 seconds
 
 scrape_configs:
   - job_name: "prometheus"
@@ -198,12 +206,14 @@ scrape_configs:
 ```
 
 **Current Status** ⚠️ **Minimal Setup**:
+
 - Only monitors Prometheus itself
 - No backend/frontend metrics
 - No application-level monitoring
 - No alerting rules
 
 **What's Missing**:
+
 - Prometheus service discovery
 - Backend application metrics
 - Node exporter for system metrics
@@ -217,10 +227,12 @@ scrape_configs:
 ### API Endpoints
 
 **Authentication**
+
 - `POST /api/auth/register` - Admin registration
 - `POST /api/auth/login` - JWT token generation
 
 **Core Resources**
+
 - Students: CRUD operations
 - Rooms: Room management with capacity/rent
 - Bookings: Student-to-room allocation with checkout
@@ -235,6 +247,7 @@ scrape_configs:
 **SQLite Database** (persistent in `./backend/db`)
 
 Tables (inferred from API):
+
 - `users` - Admin credentials
 - `students` - Student records
 - `rooms` - Hostel rooms
@@ -246,6 +259,7 @@ Tables (inferred from API):
 ## Deployment Status
 
 ### ✅ Configured & Ready
+
 - Docker containerization (both images)
 - Terraform infrastructure (EC2 + Security Group)
 - Ansible provisioning
@@ -254,6 +268,7 @@ Tables (inferred from API):
 - Application CRUD functionality
 
 ### ⚠️ Partial/Needs Work
+
 - Monitoring (Prometheus minimal, Grafana unconfigured)
 - CI/CD health checks
 - Database backups
@@ -262,6 +277,7 @@ Tables (inferred from API):
 - Security hardening
 
 ### ❌ Not Yet Implemented
+
 - HTTPS/SSL certificates
 - Load balancing
 - Auto-scaling
@@ -275,17 +291,20 @@ Tables (inferred from API):
 ## Performance Insights
 
 ### Infrastructure
+
 - **Instance**: t3.micro (suitable for low traffic)
 - **Memory**: 1 GB (tight for all 4 services + DB)
 - **Disk**: Default (likely 8-30 GB)
 - **Network**: Standard AWS throughput
 
 ### Containerization
+
 - **Frontend Build**: Multi-stage ✅ (optimized)
 - **Backend Build**: Single-stage (could be optimized)
 - **Database**: File-based SQLite (no concurrency issues for small scale)
 
 ### CI/CD
+
 - **Speed**: ~2-3 minutes (build time depends on npm)
 - **Downtime**: ~30 seconds during deployment
 - **Rollback**: None (manual required)
@@ -295,12 +314,14 @@ Tables (inferred from API):
 ## Security Assessment
 
 ### 🟢 Good
+
 - JWT authentication
 - Password hashing (bcryptjs)
 - CORS configured
 - Environment variables for config
 
 ### 🟡 Needs Attention
+
 - Security group (SSH open to world)
 - Terraform state unencrypted
 - No HTTPS/TLS
@@ -308,6 +329,7 @@ Tables (inferred from API):
 - No rate limiting
 
 ### 🔴 Critical
+
 - Database in container volume (not persisted properly)
 - No backup strategy
 - Secrets exposure risk in CI/CD logs
@@ -318,6 +340,7 @@ Tables (inferred from API):
 ## Recommendations (Priority Order)
 
 ### 1. Immediate (Security & Stability)
+
 ```
 [ ] Restrict SSH to specific IPs in Security Group
 [ ] Move Terraform state to S3 with encryption
@@ -327,6 +350,7 @@ Tables (inferred from API):
 ```
 
 ### 2. Short-term (Observability & Quality)
+
 ```
 [ ] Instrument backend with Prometheus metrics (prom-client)
 [ ] Configure Grafana dashboards
@@ -336,6 +360,7 @@ Tables (inferred from API):
 ```
 
 ### 3. Medium-term (Scalability & Reliability)
+
 ```
 [ ] Use RDS instead of SQLite
 [ ] Implement Redis for caching/sessions
@@ -345,6 +370,7 @@ Tables (inferred from API):
 ```
 
 ### 4. Long-term (Enterprise-ready)
+
 ```
 [ ] Kubernetes migration
 [ ] Multi-region deployment
