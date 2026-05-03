@@ -41,7 +41,7 @@ export default function Dashboard() {
       <h2>Dashboard</h2>
       <div className="stats-grid">
         <div className="stat-card">
-          <h3>Active Students</h3>
+          <h3>Students</h3>
           <p className="number">{stats.totalStudents}</p>
         </div>
         <div className="stat-card">
